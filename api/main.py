@@ -33,7 +33,7 @@ model.compile()
 
 CLASS_NAMES = ["Early Blight", "Late Blight", "Healthy"]
 
-@app.get("/ping")
+@app.get("/")
 async def ping():
     return "Hello, I am alive"
 
