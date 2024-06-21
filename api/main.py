@@ -8,15 +8,9 @@ import tensorflow as tf
 
 app = FastAPI()
 
-origins = [
-    "http://localhost",
-    "http://localhost:3000",
-    "https://potato-website.onrender.com"
-]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins="https://potato-website.onrender.com",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
