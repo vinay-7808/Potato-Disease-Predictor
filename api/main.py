@@ -10,7 +10,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins="True",
+    allow_origins=["*"],  # Corrected the value from "True" to ["*"]
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -30,7 +30,10 @@ model.compile()
 CLASS_NAMES = ["Early Blight", "Late Blight", "Healthy"]
 
 def read_file_as_image(data) -> np.ndarray:
-    image = np.array(Image.open(BytesIO(data)))
+    # Open image and resize to 256x256, convert to RGB
+    image = Image.open(BytesIO(data)).convert('RGB').resize((256, 256))
+    image = np.array(image)
+    print(f"Image shape: {image.shape}")  # Debugging shape
     return image
 
 @app.post("/")
@@ -40,12 +43,20 @@ async def predict(
     image = read_file_as_image(await file.read())
     img_batch = np.expand_dims(image, 0)
     
-    # Make sure to normalize the input image data if needed
+    # Debugging batch shape
+    print(f"Batch shape: {img_batch.shape}")
 
-    predictions = model.predict(img_batch)
+    # Make sure to normalize the input image data if needed
+    # For example: img_batch = img_batch / 255.0
+
+    try:
+        predictions = model.predict(img_batch)
+    except Exception as e:
+        print(f"Prediction error: {e}")
+        return {"error": "Prediction error occurred"}
 
     # Debug predictions
-    print(predictions)
+    print(f"Predictions: {predictions}")
 
     predicted_class_index = np.argmax(predictions['dense_1'][0])
     predicted_class = CLASS_NAMES[predicted_class_index]
