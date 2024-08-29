@@ -10,7 +10,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins="https://potato-website.onrender.com",
+    allow_origins="True",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
