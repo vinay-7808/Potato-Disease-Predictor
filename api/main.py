@@ -10,7 +10,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Corrected the value from "True" to ["*"]
+    allow_origins=["https://algo-solution.onrender.com/"],  # Corrected the value from "True" to ["*"]
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
